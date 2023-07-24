@@ -49,7 +49,7 @@ export function AddProjectForm() {
       phone: '',
       address: '',
       complementary: '',
-      access: '',
+      access: '1234',
       dates: ['', ''],
       estimation: 12,
       goal_per_day: 1200,

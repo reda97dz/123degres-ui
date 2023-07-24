@@ -18,6 +18,7 @@ export function AddProjectTeamForm(props: AddProjectTeamFormProps) {
   const { users } = useAppSelector(selectUsers);
   const [opened, { open, close }] = useDisclosure(true);
   const [checkboxValue, setCheckboxValue] = useState<string[]>([]);
+  const [newUserName, setNewUserName] = useState<string>('');
 
   useEffect(() => {
     getUsers();
@@ -50,6 +51,7 @@ export function AddProjectTeamForm(props: AddProjectTeamFormProps) {
     const response = await postUserTmp(user);
     if (response.data) {
       dispatch(addNewUser(response.data[0]));
+      setNewUserName('');
     }
   }
 
@@ -81,13 +83,19 @@ export function AddProjectTeamForm(props: AddProjectTeamFormProps) {
             }}
             breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
           >
-            <TextInput label="Nom" placeholder="Nom" required />
+            <TextInput
+              label="Nom"
+              placeholder="Nom"
+              required
+              value={newUserName}
+              onChange={(e) => setNewUserName(e.target.value)}
+            />
             <TextInput label="Adresse email" placeholder="Adresse email" />
             <Button
               variant="subtle"
               maw={100}
               px={10}
-              onClick={() => addUser({ name: form.values.name })}
+              onClick={() => addUser({ name: newUserName })}
             >
               Ajouter
             </Button>
