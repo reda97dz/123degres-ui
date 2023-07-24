@@ -1,5 +1,5 @@
-import { ProjectRow, ProjectsResponseSuccess, getProjects } from '@/modules/supabase/projects';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ProjectRow, ProjectsResponseSuccess } from '@/modules/supabase/projects';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk, RootState } from '@/modules/context/store';
 
 interface ProjectsState {
@@ -13,15 +13,6 @@ const initialState: ProjectsState = {
   loading: false,
   errorMessage: null,
 };
-
-export const fetchProjects = createAsyncThunk('projects/fetchProjects', async () => {
-  try {
-    const response = await getProjects();
-    return response;
-  } catch (error) {
-    throw error;
-  }
-});
 
 const projectsSlice = createSlice({
   name: 'projects',

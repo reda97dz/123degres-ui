@@ -7,7 +7,6 @@ import {
   TextInput,
   NumberInput,
   ScrollArea,
-  Divider,
 } from '@mantine/core';
 import 'dayjs/locale/fr';
 import { DatePickerInput } from '@mantine/dates';
@@ -17,6 +16,7 @@ import { useState } from 'react';
 import { TeamRow, postTeam, updateTeam } from '@/modules/supabase/teams';
 import { useAppDispatch } from '@/modules/context/hooks';
 import { addNewProject } from '@/modules/context/slices/projects.slice';
+import { AddProjectTeamForm } from './AddProjectTeamForm';
 
 export function AddProjectForm() {
   const dispatch = useAppDispatch();
@@ -60,7 +60,7 @@ export function AddProjectForm() {
 
   async function submitProject(values: Form) {
     setLoadingTeamInsert(true);
-    const teamRes = await postTeam({ name: `${values.client} projet` });
+    const teamRes = await postTeam({ name: `Equipe ${values.client} projet` });
     setLoadingTeamInsert(false);
     if (teamRes.status === 201 && teamRes.data) {
       console.log('team created');
@@ -87,16 +87,8 @@ export function AddProjectForm() {
 
   return (
     <>
-      <Modal opened={openedTeam} onClose={teamCallbacks.close} title="Ajouter équipe" centered>
-        <form onSubmit={teamForm.onSubmit(submitTeamUpdate)}>
-          <TextInput placeholder="Nom de l'équipe" {...teamForm.getInputProps('name')} />
-          <Divider my="md" label="Sélectionner les membres de l'équipe" />
-          <Divider my="md" label="Créer de nouveaux membres" />
-          <Group position="right" mt="md">
-            <Button type="submit">Valider</Button>
-          </Group>
-        </form>
-      </Modal>
+      {team && <AddProjectTeamForm team={team} />}
+
       <Modal
         opened={opened}
         onClose={close}
