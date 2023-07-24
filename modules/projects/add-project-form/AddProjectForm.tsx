@@ -9,6 +9,7 @@ import {
   ScrollArea,
   Divider,
 } from '@mantine/core';
+import 'dayjs/locale/fr';
 import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { ProjectInsert, postProject } from '@/modules/supabase/projects';
@@ -136,6 +137,7 @@ export function AddProjectForm() {
           <DatePickerInput
             mt="md"
             required
+            locale="fr"
             dropdownType="modal"
             type="range"
             label="Dates projet"
