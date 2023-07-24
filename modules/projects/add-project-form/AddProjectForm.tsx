@@ -63,19 +63,16 @@ export function AddProjectForm() {
     const teamRes = await postTeam({ name: `Equipe ${values.client} projet` });
     setLoadingTeamInsert(false);
     if (teamRes.status === 201 && teamRes.data) {
-      console.log('team created');
       setTeam(teamRes.data[0]);
       const teamId = teamRes.data[0].id;
 
       setLoadingProjectInsert(true);
-      console.log('creating project');
       const { dates, ...rest } = values;
       const project: ProjectInsert = { ...rest, start: dates[0], end: dates[1], team_id: teamId };
 
       const projectRes = await postProject(project);
       setLoadingProjectInsert(false);
       if (projectRes.status === 201 && projectRes.data) {
-        console.log('project created');
         const projectId = projectRes.data[0].id;
         dispatch(addNewProject(projectRes.data[0]));
         setProjectId(projectId);

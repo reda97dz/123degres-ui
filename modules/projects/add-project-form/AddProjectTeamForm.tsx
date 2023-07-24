@@ -39,12 +39,10 @@ export function AddProjectTeamForm(props: AddProjectTeamFormProps) {
       memberIds: checkboxValue,
     },
   });
-  console.log(form.values);
   type Form = typeof form.values;
 
   async function submitTeamUpdate(updatedTeam: Form) {
     const response = await updateTeam(updatedTeam, 0);
-    console.log(response.status);
   }
 
   async function addUser(user: UserTmpInsert) {
