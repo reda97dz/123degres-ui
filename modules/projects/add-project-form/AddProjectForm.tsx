@@ -147,7 +147,7 @@ export function AddProjectForm() {
           <SimpleGrid cols={2} mt="md" breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
             <NumberInput
               label="Estimation (heures)"
-              placeholder="20 heures"
+              placeholder="20"
               defaultValue={12}
               formatter={(value) => (!Number.isNaN(parseInt(value)) ? `${value} heures` : '')}
               {...form.getInputProps('estimation')}
@@ -155,12 +155,12 @@ export function AddProjectForm() {
             <NumberInput
               label="But/jour"
               defaultValue={1200}
-              parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
-              formatter={(value) =>
-                !Number.isNaN(parseFloat(value))
-                  ? `€ ${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-                  : '€ '
-              }
+              // parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+              // formatter={(value) =>
+              //   !Number.isNaN(parseFloat(value))
+              //     ? `€ ${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+              //     : '€ '
+              // }
               {...form.getInputProps('goal_per_day')}
             />
           </SimpleGrid>
