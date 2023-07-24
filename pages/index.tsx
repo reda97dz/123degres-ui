@@ -1,4 +1,4 @@
-import { Layout } from "@/modules/layout/Layout"
+import { Layout } from '@/modules/layout';
 
 export default function HomePage() {
   return <Layout>Home</Layout>;

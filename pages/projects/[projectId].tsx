@@ -1,4 +1,4 @@
-import { Layout } from "@/modules/layout/Layout"
+import { Layout } from '@/modules/layout';
 import { Router, useRouter } from 'next/router';
 
 export default function project() {

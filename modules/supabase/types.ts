@@ -23,7 +23,7 @@ export interface Database {
           id: number
           phone: string
           start: string
-          team_id: number | null
+          team_id: number
           updated_at: string | null
         }
         Insert: {
@@ -39,7 +39,7 @@ export interface Database {
           id?: number
           phone: string
           start: string
-          team_id?: number | null
+          team_id: number
           updated_at?: string | null
         }
         Update: {
@@ -55,7 +55,7 @@ export interface Database {
           id?: number
           phone?: string
           start?: string
-          team_id?: number | null
+          team_id?: number
           updated_at?: string | null
         }
         Relationships: [
@@ -149,19 +149,22 @@ export interface Database {
           created_at: string | null
           id: number
           team_id: number
-          user_id: string
+          user_id: string | null
+          user_id_tmp: number | null
         }
         Insert: {
           created_at?: string | null
           id?: number
           team_id: number
-          user_id: string
+          user_id?: string | null
+          user_id_tmp?: number | null
         }
         Update: {
           created_at?: string | null
           id?: number
           team_id?: number
-          user_id?: string
+          user_id?: string | null
+          user_id_tmp?: number | null
         }
         Relationships: [
           {
@@ -174,6 +177,12 @@ export interface Database {
             foreignKeyName: "team_member_user_id_fkey"
             columns: ["user_id"]
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_member_user_id_tmp_fkey"
+            columns: ["user_id_tmp"]
+            referencedRelation: "users_tmp"
             referencedColumns: ["id"]
           }
         ]
@@ -251,6 +260,27 @@ export interface Database {
             referencedColumns: ["id"]
           }
         ]
+      }
+      users_tmp: {
+        Row: {
+          created_at: string | null
+          id: number
+          name: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          name?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          name?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {

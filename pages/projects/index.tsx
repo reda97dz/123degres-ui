@@ -1,5 +1,5 @@
-import { Layout } from '@/modules/layout/Layout';
-import { Projects } from "@/modules/projects/Projects"
+import { Layout } from '@/modules/layout';
+import { Projects } from '@/modules/projects/Projects';
 import {
   ProjectsResponseError,
   ProjectsResponseSuccess,

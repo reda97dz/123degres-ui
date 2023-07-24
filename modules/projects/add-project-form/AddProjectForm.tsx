@@ -11,11 +11,11 @@ import {
 import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { ProjectInsert, postProject } from '@/modules/supabase/projects';
-import { useState } from "react"
+import { useState } from 'react';
 
 export function AddProjectForm() {
   const [opened, { open, close }] = useDisclosure(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     initialValues: {
@@ -33,12 +33,12 @@ export function AddProjectForm() {
   type Form = typeof form.values;
 
   async function submitProject(values: Form) {
-    setLoading(true)
+    setLoading(true);
     const { dates, ...rest } = values;
-    const project: ProjectInsert = { ...rest, start: dates[0], end: dates[1] };
+    const project: ProjectInsert = { ...rest, start: dates[0], end: dates[1], team_id: 1 };
 
     const response = await postProject(project);
-    setLoading(false)
+    setLoading(false);
     console.log(response);
   }
 
@@ -112,7 +112,9 @@ export function AddProjectForm() {
           </SimpleGrid>
 
           <Group position="right" mt="md">
-            <Button type="submit" loading={loading}>Suivant</Button>
+            <Button type="submit" loading={loading}>
+              Suivant
+            </Button>
           </Group>
         </form>
 
