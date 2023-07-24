@@ -1,3 +1,5 @@
+import { useAppDispatch } from '@/modules/context/hooks';
+import { setInitialProjects } from '@/modules/context/slices/projects.slice';
 import { Layout } from '@/modules/layout';
 import { Projects } from '@/modules/projects/Projects';
 import {
@@ -7,7 +9,7 @@ import {
 } from '@/modules/supabase/projects';
 import { Button } from '@mantine/core';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ProjectsProps {
   projects: ProjectsResponseSuccess;
@@ -16,7 +18,7 @@ interface ProjectsProps {
 
 export default function projects(props: ProjectsProps) {
   const { projects, error } = props;
-
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
@@ -33,6 +35,10 @@ export default function projects(props: ProjectsProps) {
       router.replace(router.asPath);
     }
   };
+
+  useEffect(() => {
+    dispatch(setInitialProjects(projects));
+  }, [dispatch, projects]);
 
   return (
     <Layout>
@@ -51,7 +57,7 @@ export default function projects(props: ProjectsProps) {
         </>
       ) : (
         <>
-          <Projects projects={projects} />
+          <Projects />
         </>
       )}
     </Layout>

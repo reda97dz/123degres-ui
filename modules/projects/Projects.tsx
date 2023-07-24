@@ -1,13 +1,12 @@
-import { SimpleGrid, Space } from '@mantine/core';
-import { ProjectsResponseSuccess } from '../supabase/projects';
+import { SimpleGrid } from '@mantine/core';
 import { ProjectCard } from './project-card';
 import { AddProjectForm } from './add-project-form';
+import { useAppSelector } from '../context/hooks';
+import { selectProjects } from '../context/slices/projects.slice';
 
-interface ProjectsProps {
-  projects: ProjectsResponseSuccess;
-}
-export function Projects(props: ProjectsProps) {
-  const { projects } = props;
+export function Projects() {
+  const { projects } = useAppSelector(selectProjects);
+
   const projectsList = projects?.map((project) => {
     return (
       <ProjectCard

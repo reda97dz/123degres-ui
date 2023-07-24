@@ -6,6 +6,8 @@ import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core
 import { Notifications } from '@mantine/notifications';
 import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider, Session } from '@supabase/auth-helpers-react';
+import { Provider } from 'react-redux';
+import { store } from '@/modules/context/store';
 
 export default function App(
   props: AppProps<{ initialSession: Session }> & { colorScheme: ColorScheme }
@@ -30,13 +32,14 @@ export default function App(
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <link rel="shortcut icon" href="/favicon.svg" />
       </Head>
-
-      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-        <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-          <Component {...pageProps} />
-          <Notifications />
-        </MantineProvider>
-      </ColorSchemeProvider>
+      <Provider store={store}>
+        <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+          <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
+            <Component {...pageProps} />
+            <Notifications />
+          </MantineProvider>
+        </ColorSchemeProvider>
+      </Provider>
     </SessionContextProvider>
   );
 }

@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Header, Container, Group, Burger, Paper, Transition } from '@mantine/core';
 import { useStyles } from './Header.style';
 import { HEADER_HEIGHT } from '../settings';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 interface HeaderProps {
   links: { link: string; label: string }[];
@@ -10,22 +12,24 @@ interface HeaderProps {
 
 export function HeaderResponsive({ links }: HeaderProps) {
   const [opened, { toggle, close }] = useDisclosure(false);
+  const router = useRouter();
   const [active, setActive] = useState(links[0].link);
   const { classes, cx } = useStyles();
 
   const items = links.map((link) => (
-    <a
+    <Link
       key={link.label}
       href={link.link}
-      className={cx(classes.link, { [classes.linkActive]: active === link.link })}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(link.link);
+      passHref
+      className={cx(classes.link, {
+        [classes.linkActive]: router.pathname === link.link,
+      })}
+      onClick={() => {
         close();
       }}
     >
       {link.label}
-    </a>
+    </Link>
   ));
 
   return (

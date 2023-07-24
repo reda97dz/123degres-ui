@@ -9,7 +9,7 @@ export async function getProjects() {
 }
 
 export async function postProject(project: ProjectInsert) {
-  const response = await supabase.from('projects').insert(project);
+  const response = await supabase.from('projects').insert(project).select();
   return response;
 }
 

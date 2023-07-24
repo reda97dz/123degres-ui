@@ -23,7 +23,7 @@ export interface Database {
           id: number
           phone: string
           start: string
-          team_id: number
+          team_id: number | null
           updated_at: string | null
         }
         Insert: {
@@ -39,7 +39,7 @@ export interface Database {
           id?: number
           phone: string
           start: string
-          team_id: number
+          team_id?: number | null
           updated_at?: string | null
         }
         Update: {
@@ -55,7 +55,7 @@ export interface Database {
           id?: number
           phone?: string
           start?: string
-          team_id?: number
+          team_id?: number | null
           updated_at?: string | null
         }
         Relationships: [
