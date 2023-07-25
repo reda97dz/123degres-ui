@@ -91,6 +91,7 @@ export function AddProjectForm() {
         onClose={close}
         title="Nouveau projet"
         scrollAreaComponent={ScrollArea.Autosize}
+        fullScreen
         centered
       >
         <form onSubmit={form.onSubmit(submitProject)}>
@@ -128,6 +129,7 @@ export function AddProjectForm() {
             required
             locale="fr"
             dropdownType="modal"
+            modalProps={{ centered: true }}
             type="range"
             label="Dates projet"
             placeholder="Début - fin projet"
@@ -142,7 +144,7 @@ export function AddProjectForm() {
               {...form.getInputProps('estimation')}
             />
             <NumberInput
-              label="But/jour"
+              label="But/jour (€)"
               defaultValue={1200}
               // parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
               // formatter={(value) =>
@@ -154,7 +156,10 @@ export function AddProjectForm() {
             />
           </SimpleGrid>
 
-          <Group position="right" mt="md">
+          <Group position="apart" mt="md">
+            <Button variant="outline" color="red" onClick={close}>
+              Fermer
+            </Button>
             <Button type="submit" loading={loadingProjectInsert}>
               Suivant
             </Button>
