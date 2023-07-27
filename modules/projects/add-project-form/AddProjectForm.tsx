@@ -1,13 +1,5 @@
 import { useDisclosure } from '@mantine/hooks';
-import {
-  Modal,
-  Group,
-  Button,
-  SimpleGrid,
-  TextInput,
-  NumberInput,
-  ScrollArea,
-} from '@mantine/core';
+import { Group, Button, SimpleGrid, TextInput, NumberInput } from '@mantine/core';
 import 'dayjs/locale/fr';
 import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
@@ -17,6 +9,7 @@ import { TeamRow, postTeam, updateTeam } from '@/modules/supabase/teams';
 import { useAppDispatch } from '@/modules/context/hooks';
 import { addNewProject } from '@/modules/context/slices/projects.slice';
 import { AddProjectTeamForm } from './AddProjectTeamForm';
+import { useRouter } from 'next/router';
 
 export function AddProjectForm() {
   const dispatch = useAppDispatch();
@@ -25,6 +18,7 @@ export function AddProjectForm() {
   const [loadingTeamInsert, setLoadingTeamInsert] = useState(false);
   const [projectId, setProjectId] = useState<number>();
   const [team, setTeam] = useState<TeamRow>();
+  const router = useRouter();
 
   const [openedTeam, teamCallbacks] = useDisclosure(!!projectId);
 
@@ -60,7 +54,7 @@ export function AddProjectForm() {
 
   async function submitProject(values: Form) {
     setLoadingTeamInsert(true);
-    const teamRes = await postTeam({ name: `Equipe ${values.client} projet` });
+    const teamRes = await postTeam({ name: `Equipe project "${values.client}"` });
     setLoadingTeamInsert(false);
     if (teamRes.status === 201 && teamRes.data) {
       setTeam(teamRes.data[0]);
@@ -86,90 +80,74 @@ export function AddProjectForm() {
     <>
       {team && <AddProjectTeamForm team={team} />}
 
-      <Modal
-        opened={opened}
-        onClose={close}
-        title="Nouveau projet"
-        scrollAreaComponent={ScrollArea.Autosize}
-        fullScreen
-        centered
-      >
-        <form onSubmit={form.onSubmit(submitProject)}>
-          <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-            <TextInput label="Nom" placeholder="Nom" required {...form.getInputProps('client')} />
-            <TextInput
-              label="Téléphone"
-              placeholder="0X XXXXXXXX"
-              required
-              {...form.getInputProps('phone')}
-            />
-          </SimpleGrid>
+      <form onSubmit={form.onSubmit(submitProject)}>
+        <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
+          <TextInput label="Nom" placeholder="Nom" required {...form.getInputProps('client')} />
           <TextInput
-            mt="md"
-            label="Adresse"
-            placeholder="Adresse"
+            label="Téléphone"
+            placeholder="0X XXXXXXXX"
             required
-            {...form.getInputProps('address')}
+            {...form.getInputProps('phone')}
           />
-          <TextInput
-            mt="md"
-            label="Complément"
-            placeholder="Complément"
-            {...form.getInputProps('complementary')}
+        </SimpleGrid>
+        <TextInput
+          mt="md"
+          label="Adresse"
+          placeholder="Adresse"
+          required
+          {...form.getInputProps('address')}
+        />
+        <TextInput
+          mt="md"
+          label="Complément"
+          placeholder="Complément"
+          {...form.getInputProps('complementary')}
+        />
+        <TextInput
+          mt="md"
+          label="Accès"
+          placeholder="Accès"
+          required
+          {...form.getInputProps('access')}
+        />
+        <DatePickerInput
+          mt="md"
+          required
+          locale="fr"
+          dropdownType="modal"
+          modalProps={{ centered: true }}
+          type="range"
+          label="Dates projet"
+          placeholder="Début - fin projet"
+          {...form.getInputProps('dates')}
+        />
+        <SimpleGrid cols={2} mt="md" breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
+          <NumberInput
+            label="Estimation (heures)"
+            placeholder="20"
+            defaultValue={12}
+            formatter={(value) => (!Number.isNaN(parseInt(value)) ? `${value} heures` : '')}
+            {...form.getInputProps('estimation')}
           />
-          <TextInput
-            mt="md"
-            label="Accès"
-            placeholder="Accès"
-            required
-            {...form.getInputProps('access')}
+          <NumberInput
+            label="But/jour (€)"
+            defaultValue={1200}
+            // parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
+            // formatter={(value) =>
+            //   !Number.isNaN(parseFloat(value))
+            //     ? `€ ${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
+            //     : '€ '
+            // }
+            {...form.getInputProps('goal_per_day')}
           />
-          <DatePickerInput
-            mt="md"
-            required
-            locale="fr"
-            dropdownType="modal"
-            modalProps={{ centered: true }}
-            type="range"
-            label="Dates projet"
-            placeholder="Début - fin projet"
-            {...form.getInputProps('dates')}
-          />
-          <SimpleGrid cols={2} mt="md" breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-            <NumberInput
-              label="Estimation (heures)"
-              placeholder="20"
-              defaultValue={12}
-              formatter={(value) => (!Number.isNaN(parseInt(value)) ? `${value} heures` : '')}
-              {...form.getInputProps('estimation')}
-            />
-            <NumberInput
-              label="But/jour (€)"
-              defaultValue={1200}
-              // parser={(value) => value.replace(/\$\s?|(,*)/g, '')}
-              // formatter={(value) =>
-              //   !Number.isNaN(parseFloat(value))
-              //     ? `€ ${value}`.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',')
-              //     : '€ '
-              // }
-              {...form.getInputProps('goal_per_day')}
-            />
-          </SimpleGrid>
+        </SimpleGrid>
 
-          <Group position="apart" mt="md">
-            <Button variant="outline" color="red" onClick={close}>
-              Fermer
-            </Button>
-            <Button type="submit" loading={loadingProjectInsert}>
-              Suivant
-            </Button>
-          </Group>
-        </form>
-      </Modal>
-
-      <Group position="center" mb="md">
-        <Button onClick={open}>Nouveau Projet</Button>
-      </Group>
+        <Group position="right" mt="md">
+          <Button type="submit" loading={loadingProjectInsert}>
+            Suivant
+          </Button>
+        </Group>
+      </form>
     </>
   );
 }

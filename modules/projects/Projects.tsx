@@ -1,11 +1,12 @@
-import { SimpleGrid } from '@mantine/core';
+import { Button, Group, SimpleGrid } from '@mantine/core';
 import { ProjectCard } from './project-card';
-import { AddProjectForm } from './add-project-form';
 import { useAppSelector } from '../context/hooks';
 import { selectProjects } from '../context/slices/projects.slice';
+import { useRouter } from 'next/router';
 
 export function Projects() {
   const { projects } = useAppSelector(selectProjects);
+  const router = useRouter();
 
   const projectsList = projects?.map((project) => {
     return (
@@ -24,7 +25,9 @@ export function Projects() {
   });
   return (
     <>
-      <AddProjectForm />
+      <Group position="right" mb="md">
+        <Button onClick={() => router.push('/projects/new')}>Nouveau Projet</Button>
+      </Group>
       <SimpleGrid
         cols={2}
         breakpoints={[

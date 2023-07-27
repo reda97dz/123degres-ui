@@ -22,7 +22,8 @@ export function HeaderResponsive({ links }: HeaderProps) {
       href={link.link}
       passHref
       className={cx(classes.link, {
-        [classes.linkActive]: router.pathname === link.link,
+        [classes.linkActive]:
+          router.pathname === link.link || (link.link !== '/' && router.asPath.includes(link.link)),
       })}
       onClick={() => {
         close();
