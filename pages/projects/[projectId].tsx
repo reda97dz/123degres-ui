@@ -1,14 +1,36 @@
 import { Layout } from '@/modules/layout';
-import { Router, useRouter } from 'next/router';
+import {
+  ProjectResponseError,
+  ProjectResponseSuccess,
+  getProject,
+} from '@/modules/supabase/projects';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 
-export default function project() {
-  const router = useRouter();
+interface ProjectProps {
+  project: ProjectResponseSuccess;
+  error: ProjectResponseError;
+}
 
-  const { projectId } = router.query;
+export default function project(props: ProjectProps) {
+  const { project, error } = props;
 
   return (
     <Layout>
-      <>Project {projectId}</>
+      <>
+        Project {project?.id} {project?.client}
+      </>
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  let { data, error } = await getProject(Number(context.query.projectId));
+
+  return {
+    props: {
+      project: data,
+      error: error,
+    },
+  };
+};

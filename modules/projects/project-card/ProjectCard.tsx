@@ -1,11 +1,13 @@
 import { Card, Group, RingProgress, Text } from '@mantine/core';
 import { useStyles } from './ProjectCard.style';
+import { useRouter } from 'next/router';
 
 interface ProjectCardProps {
   title: string;
   subtitle: string;
   completed: number;
   total: number;
+  projectId: number;
   stats: {
     label: string;
     value: string;
@@ -14,7 +16,8 @@ interface ProjectCardProps {
 
 export function ProjectCard(props: ProjectCardProps) {
   const { classes, theme } = useStyles();
-  const { stats, title, subtitle, completed } = props;
+  const { stats, title, subtitle, completed, projectId } = props;
+  const router = useRouter();
 
   const items = stats.map((stat) => (
     <div key={stat.label}>
@@ -26,7 +29,13 @@ export function ProjectCard(props: ProjectCardProps) {
   ));
 
   return (
-    <Card withBorder p="xl" radius="md" className={classes.card}>
+    <Card
+      withBorder
+      p="xl"
+      radius="md"
+      className={classes.card}
+      onClick={() => router.push(`/projects/${projectId}`)}
+    >
       <div className={classes.inner}>
         <div>
           <Text fz="xl" className={classes.label}>

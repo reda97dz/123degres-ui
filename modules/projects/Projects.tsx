@@ -12,6 +12,7 @@ export function Projects() {
     return (
       <ProjectCard
         key={project.id}
+        projectId={project.id}
         title={project.client}
         subtitle={project.address}
         completed={8}

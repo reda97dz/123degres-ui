@@ -5,7 +5,7 @@ export type TaskInsert = Database['public']['Tables']['tasks']['Insert']
 
 
 export async function getProjectTasks(project_id: number) {
-  const response = await supabase.from('tasks').select().filter("id", "is", project_id)
+  const response = await supabase.from('tasks').select(`*, task_histories (*)`).filter("id", "is", project_id)
   return response
 }
 

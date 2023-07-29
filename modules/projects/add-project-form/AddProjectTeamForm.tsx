@@ -11,10 +11,11 @@ import { useRouter } from 'next/router';
 
 interface AddProjectTeamFormProps {
   team: TeamRow;
+  projectId: Number;
 }
 
 export function AddProjectTeamForm(props: AddProjectTeamFormProps) {
-  const { team } = props;
+  const { team, projectId } = props;
   const router = useRouter();
 
   const dispatch = useAppDispatch();
@@ -90,7 +91,7 @@ export function AddProjectTeamForm(props: AddProjectTeamFormProps) {
           <Button
             onClick={() => {
               close();
-              router.push('/projects');
+              router.push(`/projects/${projectId}`);
             }}
             variant="outline"
             color="red"

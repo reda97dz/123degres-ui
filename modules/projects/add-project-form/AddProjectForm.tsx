@@ -9,33 +9,15 @@ import { TeamRow, postTeam, updateTeam } from '@/modules/supabase/teams';
 import { useAppDispatch } from '@/modules/context/hooks';
 import { addNewProject } from '@/modules/context/slices/projects.slice';
 import { AddProjectTeamForm } from './AddProjectTeamForm';
-import { useRouter } from 'next/router';
 
 export function AddProjectForm() {
   const dispatch = useAppDispatch();
-  const [opened, { open, close }] = useDisclosure(false);
   const [loadingProjectInsert, setLoadingProjectInsert] = useState(false);
   const [loadingTeamInsert, setLoadingTeamInsert] = useState(false);
   const [projectId, setProjectId] = useState<number>();
   const [team, setTeam] = useState<TeamRow>();
-  const router = useRouter();
 
   const [openedTeam, teamCallbacks] = useDisclosure(!!projectId);
-
-  const teamForm = useForm({
-    initialValues: {
-      name: team?.name ?? '',
-    },
-  });
-
-  type TeamForm = typeof teamForm.values;
-
-  async function submitTeamUpdate(updatedTeam: TeamForm) {
-    if (team) {
-      const teamRes = await updateTeam(updatedTeam, team.id);
-      teamCallbacks.close();
-    }
-  }
 
   const form = useForm({
     initialValues: {
@@ -70,7 +52,6 @@ export function AddProjectForm() {
         const projectId = projectRes.data[0].id;
         dispatch(addNewProject(projectRes.data[0]));
         setProjectId(projectId);
-        close();
         teamCallbacks.open();
       }
     }
@@ -78,7 +59,7 @@ export function AddProjectForm() {
 
   return (
     <>
-      {team && <AddProjectTeamForm team={team} />}
+      {team && projectId && <AddProjectTeamForm team={team} projectId={projectId} />}
 
       <form onSubmit={form.onSubmit(submitProject)}>
         <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
