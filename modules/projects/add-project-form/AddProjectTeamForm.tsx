@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 
 interface AddProjectTeamFormProps {
   team: TeamRow;
-  projectId: Number;
+  projectId: number;
 }
 
 export function AddProjectTeamForm(props: AddProjectTeamFormProps) {

@@ -1,10 +1,12 @@
 import { Action, combineReducers, configureStore, ThunkAction } from '@reduxjs/toolkit';
-import projectReducer from './slices/projects.slice';
+import projectsReducer from './slices/projects.slice';
 import userReducer from './slices/usersTmp.slice';
+import projectReducer from './slices/project.slice';
 
 const reducer = combineReducers({
-  projects: projectReducer,
+  projects: projectsReducer,
   users: userReducer,
+  project: projectReducer,
 });
 
 export const store = configureStore({

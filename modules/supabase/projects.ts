@@ -3,9 +3,9 @@ import { Database, supabase } from '@/modules/supabase';
 export type ProjectRow = Database['public']['Tables']['projects']['Row'];
 export type ProjectInsert = Database['public']['Tables']['projects']['Insert'];
 
-export async function getProject(projectId: number){
-  const response = await supabase.from("projects").select().eq("id", projectId).limit(1).single();
-  return response
+export async function getProject(projectId: number) {
+  const response = await supabase.from('projects').select().eq('id', projectId).limit(1).single();
+  return response;
 }
 
 export async function getProjects() {
