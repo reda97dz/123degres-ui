@@ -34,14 +34,11 @@ export type UpdateTeamResponseError = UpdateTeamResponse['error'];
 
 export async function getProjectTeam(projectId: number) {
   const response = await supabase
-    .from('team_member')
-    .select('users_tmp (name, email)')
-    .eq(
-      'team_id',
-      (
-        await supabase.from('projects').select('team_id').eq('id', projectId).limit(1).single()
-      ).data?.team_id
-    );
+    .from('projects')
+    .select('teams (*, team_member (users_tmp (name, email)))')
+    .eq('id', projectId)
+    .limit(1)
+    .single();
   return response;
 }
 

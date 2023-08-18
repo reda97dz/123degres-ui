@@ -12,6 +12,7 @@ import {
 import { useStyles } from './project-team/ProjectTeam.style';
 import { useAppSelector } from '@/modules/context/hooks';
 import { selectProject } from '@/modules/context/slices/project.slice';
+import { ProjectTeam } from './project-team';
 
 export function Project() {
   const { team, project } = useAppSelector(selectProject);
@@ -60,27 +61,7 @@ export function Project() {
         </Card>
         <Grid gutter="md">
           <Grid.Col>
-            <Card withBorder radius="md" className={classes.card}>
-              <Text weight={500} mb="md">
-                Equipe
-              </Text>
-              <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]} spacing="xs">
-                {team &&
-                  team.map((t) => (
-                    <UnstyledButton className={classes.user}>
-                      <div style={{ flex: 1 }}>
-                        <Text size="sm" weight={500}>
-                          {t.users_tmp?.name}
-                        </Text>
-
-                        <Text color="dimmed" size="xs">
-                          {t.users_tmp?.email}
-                        </Text>
-                      </div>
-                    </UnstyledButton>
-                  ))}
-              </SimpleGrid>
-            </Card>
+            <ProjectTeam />
           </Grid.Col>
           <Grid.Col span={6}>
             <Card withBorder radius="md" className={classes.card}>

@@ -1,11 +1,11 @@
 import { useDisclosure } from '@mantine/hooks';
-import { Group, Button, SimpleGrid, TextInput, NumberInput } from '@mantine/core';
+import { Group, Button, SimpleGrid, TextInput, NumberInput, Modal } from '@mantine/core';
 import 'dayjs/locale/fr';
 import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { ProjectInsert, postProject } from '@/modules/supabase/projects';
 import { useState } from 'react';
-import { TeamRow, postTeam, updateTeam } from '@/modules/supabase/teams';
+import { TeamRow, postTeam} from '@/modules/supabase/teams';
 import { useAppDispatch } from '@/modules/context/hooks';
 import { addNewProject } from '@/modules/context/slices/projects.slice';
 import { AddProjectTeamForm } from './AddProjectTeamForm';
@@ -16,8 +16,7 @@ export function AddProjectForm() {
   const [loadingTeamInsert, setLoadingTeamInsert] = useState(false);
   const [projectId, setProjectId] = useState<number>();
   const [team, setTeam] = useState<TeamRow>();
-
-  const [openedTeam, teamCallbacks] = useDisclosure(!!projectId);
+  const [opened, { open, close }] = useDisclosure(false);
 
   const form = useForm({
     initialValues: {
@@ -52,14 +51,18 @@ export function AddProjectForm() {
         const projectId = projectRes.data[0].id;
         dispatch(addNewProject(projectRes.data[0]));
         setProjectId(projectId);
-        teamCallbacks.open();
+        open();
       }
     }
   }
 
   return (
     <>
-      {team && projectId && <AddProjectTeamForm team={team} projectId={projectId} />}
+      {team && projectId && (
+        <Modal opened={opened} onClose={close} title="Ajouter équipe" centered>
+          <AddProjectTeamForm team={team} projectId={projectId} close={close} />
+        </Modal>
+      )}
 
       <form onSubmit={form.onSubmit(submitProject)}>
         <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
