@@ -2,7 +2,6 @@ import { useAppDispatch } from '@/modules/context/hooks';
 import { setInitialProject } from '@/modules/context/slices/project.slice';
 import { Layout } from '@/modules/layout';
 import { Project } from "@/modules/projects/project"
-import { ProjectTeam } from '@/modules/projects/project/project-team';
 import {
   ProjectResponseError,
   ProjectResponseSuccess,
@@ -14,7 +13,6 @@ import {
   getProjectTeam,
 } from '@/modules/supabase/teams';
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 interface ProjectProps {
@@ -27,30 +25,11 @@ interface ProjectProps {
 export default function project(props: ProjectProps) {
   const { project, projectError, projectTeam, projectTeamError } = props;
   const dispatch = useAppDispatch();
-  const router = useRouter();
-
-  const refresh = async () => {
-    if (project) {
-      const res = await getProjectTeam(project.id);
-      if (!res.error) {
-        router.replace(router.asPath);
-      }
-    }
-  };
 
   useEffect(() => {
     dispatch(setInitialProject({ project: project, team: projectTeam }));
   }, [dispatch, project, projectTeam]);
 
-  const renderMembers = () => {
-    if (projectTeam && projectTeam.length > 0) {
-      return projectTeam.map((teamMember) => {
-        if (teamMember.users_tmp) {
-          return <p key={Math.random()}>member: {teamMember.users_tmp.name}</p>;
-        }
-      });
-    }
-  };
 
   return (
     <Layout>
