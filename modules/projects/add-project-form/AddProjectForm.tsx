@@ -5,7 +5,7 @@ import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { ProjectInsert, postProject } from '@/modules/supabase/projects';
 import { useState } from 'react';
-import { TeamRow, postTeam} from '@/modules/supabase/teams';
+import { TeamRow, postTeam } from '@/modules/supabase/teams';
 import { useAppDispatch } from '@/modules/context/hooks';
 import { addNewProject } from '@/modules/context/slices/projects.slice';
 import { AddProjectTeamForm } from './AddProjectTeamForm';

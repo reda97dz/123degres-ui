@@ -1,7 +1,7 @@
 import { useAppDispatch } from '@/modules/context/hooks';
 import { setInitialProject } from '@/modules/context/slices/project.slice';
 import { Layout } from '@/modules/layout';
-import { Project } from "@/modules/projects/project"
+import { Project } from '@/modules/projects/project';
 import {
   ProjectResponseError,
   ProjectResponseSuccess,
@@ -30,12 +30,9 @@ export default function project(props: ProjectProps) {
     dispatch(setInitialProject({ project: project, team: projectTeam }));
   }, [dispatch, project, projectTeam]);
 
-
   return (
     <Layout>
-      <>
-        <Project />
-      </>
+      <Project />
     </Layout>
   );
 }

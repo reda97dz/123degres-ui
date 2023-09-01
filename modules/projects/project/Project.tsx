@@ -13,15 +13,19 @@ import { useStyles } from './project-team/ProjectTeam.style';
 import { useAppSelector } from '@/modules/context/hooks';
 import { selectProject } from '@/modules/context/slices/project.slice';
 import { ProjectTeam } from './project-team';
+import dayjs from 'dayjs';
+import weekday from 'dayjs/plugin/weekday';
+import { ProjectBoard } from './project-board';
 
 export function Project() {
   const { team, project } = useAppSelector(selectProject);
   const { classes } = useStyles();
+
   return (
     <Container>
       <SimpleGrid cols={2} spacing="md" breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
         <Card withBorder radius="md" className={classes.card}>
-          <Text weight={500} mb="md">
+          <Text weight={700} mb="md">
             Informations Projet
           </Text>
           {project && (
@@ -65,7 +69,7 @@ export function Project() {
           </Grid.Col>
           <Grid.Col span={6}>
             <Card withBorder radius="md" className={classes.card}>
-              <Text weight={500} mb="md">
+              <Text weight={700} mb="md">
                 But
               </Text>
               <Text fz="lg" fw={400} c="dimmed">
@@ -76,7 +80,7 @@ export function Project() {
           </Grid.Col>
           <Grid.Col span={6}>
             <Card withBorder radius="md" className={classes.card}>
-              <Text weight={500} mb="md">
+              <Text weight={700} mb="md">
                 Estimation
               </Text>
               <Text fz="lg" fw={400} c="dimmed">
@@ -101,6 +105,7 @@ export function Project() {
           </Grid.Col>
         </Grid>
       </SimpleGrid>
+      <ProjectBoard />
     </Container>
   );
 }

@@ -28,10 +28,10 @@ const projectsSlice = createSlice({
       state.errorMessage = null;
     },
     addNewProject(state, action: PayloadAction<ProjectRow>) {
-      if(state.projects){
-        state.projects.push(action.payload)
+      if (state.projects) {
+        state.projects.push(action.payload);
       }
-    }
+    },
   },
 });
 

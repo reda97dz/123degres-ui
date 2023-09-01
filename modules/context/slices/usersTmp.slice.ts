@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppThunk, RootState } from '@/modules/context/store';
-import { getUsersTmp, UsersTmpResponseSuccess, UserTmpRow } from "@/modules/supabase/users"
+import { getUsersTmp, UsersTmpResponseSuccess, UserTmpRow } from '@/modules/supabase/users';
 
 interface UsersState {
   users: UsersTmpResponseSuccess | null;
@@ -37,10 +37,10 @@ const usersSlice = createSlice({
       state.errorMessage = null;
     },
     addNewUser(state, action: PayloadAction<UserTmpRow>) {
-      if(state.users){
-        state.users.push(action.payload)
+      if (state.users) {
+        state.users.push(action.payload);
       }
-    }
+    },
   },
 });
 

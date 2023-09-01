@@ -58,9 +58,7 @@ export function CheckboxCard({
       />
 
       <div>
-        <Text fw={400} >
-          {title}
-        </Text>
+        <Text fw={400}>{title}</Text>
       </div>
     </UnstyledButton>
   );

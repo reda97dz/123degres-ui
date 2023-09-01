@@ -14,10 +14,10 @@ export function ProjectTeam() {
     return {
       id: team?.teams?.id ?? 0,
       name: team && team.teams && team.teams.name,
-      created_at: team && team.teams &&  team.teams.created_at,
-      updated_at: team && team.teams && team.teams.updated_at
-    }
-  }
+      created_at: team && team.teams && team.teams.created_at,
+      updated_at: team && team.teams && team.teams.updated_at,
+    };
+  };
 
   return (
     <>
@@ -27,7 +27,7 @@ export function ProjectTeam() {
         </Modal>
       )}
       <Card withBorder radius="md" className={classes.card}>
-        <Text weight={500} mb="md">
+        <Text weight={700} mb="md">
           {team?.teams?.name}
         </Text>
         {team && team.teams && team.teams.team_member.length > 0 ? (
