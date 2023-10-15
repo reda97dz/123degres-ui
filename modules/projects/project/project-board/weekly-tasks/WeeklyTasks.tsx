@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { useProjectBoard } from '../project-board-hooks';
 import { useAppSelector } from '@/modules/context/hooks';
 import { selectProject } from '@/modules/context/slices/project.slice';
-import { DailyTasks } from '../daily-tasks/DailyTasks';
+import { DailyTasks } from '../daily-tasks';
 
 export function WeeklyTasks() {
   const { tasks } = useAppSelector(selectProject);
