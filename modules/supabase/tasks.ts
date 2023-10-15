@@ -1,18 +1,21 @@
-import { Database, supabase } from '@/modules/supabase';
+import { Database, Json, supabase } from '@/modules/supabase';
 
 export type TaskRow = Database['public']['Tables']['tasks']['Row'];
+export type TaskHistoryRow = Database['public']['Tables']['task_histories']['Row'];
 export type TaskInsert = Database['public']['Tables']['tasks']['Insert'];
 
-export async function getProjectTasks(project_id: number) {
-  const response = await supabase
-    .from('tasks')
-    .select(`*, task_histories (*)`)
-    .filter('id', 'is', project_id);
+export async function getProjectTasks(project_id: number, start_date: string, end_date: string) {
+  const response = await supabase.rpc('get_filtered_task_histories', {
+    p_id: project_id,
+    start_date,
+    end_date,
+  });
   return response;
 }
 
 type GetProjectTasksResponse = Awaited<ReturnType<typeof getProjectTasks>>;
 export type ProjectTasksSuccess = GetProjectTasksResponse['data'];
+export type ModifiedProjectTasksSuccess = Array<TaskRow & { filtered_histories: string }>;
 export type ProjectTasksError = GetProjectTasksResponse['error'];
 
 export async function postProjectTask(task: TaskInsert) {

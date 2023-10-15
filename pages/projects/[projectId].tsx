@@ -8,10 +8,17 @@ import {
   getProject,
 } from '@/modules/supabase/projects';
 import {
+  ModifiedProjectTasksSuccess,
+  ProjectTasksError,
+  ProjectTasksSuccess,
+  getProjectTasks,
+} from '@/modules/supabase/tasks';
+import {
   GetProjectTeamError,
   GetProjectTeamSuccess,
   getProjectTeam,
 } from '@/modules/supabase/teams';
+import { getEndOfWeek, getStartOfWeek } from '@mantine/dates';
 import { GetServerSideProps } from 'next';
 import { useEffect } from 'react';
 
@@ -20,14 +27,16 @@ interface ProjectProps {
   projectError: ProjectResponseError;
   projectTeam: GetProjectTeamSuccess;
   projectTeamError: GetProjectTeamError;
+  projectTasks: ModifiedProjectTasksSuccess;
+  projectTasksError: ProjectTasksError;
 }
 
 export default function project(props: ProjectProps) {
-  const { project, projectError, projectTeam, projectTeamError } = props;
+  const { project, projectTeam, projectTasks } = props;
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setInitialProject({ project: project, team: projectTeam }));
+    dispatch(setInitialProject({ project: project, team: projectTeam, tasks: projectTasks }));
   }, [dispatch, project, projectTeam]);
 
   return (
@@ -38,8 +47,17 @@ export default function project(props: ProjectProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  let projectResponse = await getProject(Number(context.query.projectId));
-  let projectTeamResponse = await getProjectTeam(Number(context.query.projectId));
+  const today = new Date();
+  const startDate = getStartOfWeek(today);
+  const endDate = getEndOfWeek(today);
+  const projectId = Number(context.query.projectId);
+  let projectResponse = await getProject(projectId);
+  let projectTeamResponse = await getProjectTeam(projectId);
+  let projectTasks = await getProjectTasks(
+    projectId,
+    startDate.toISOString(),
+    endDate.toISOString()
+  );
 
   return {
     props: {
@@ -47,6 +65,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       projectError: projectResponse.error,
       projectTeam: projectTeamResponse.data,
       projectTeamError: projectTeamResponse.error,
+      projectTasks: projectTasks.data,
+      projectTasksEror: projectTasks.error,
     },
   };
 };

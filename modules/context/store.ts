@@ -2,11 +2,13 @@ import { Action, combineReducers, configureStore, ThunkAction } from '@reduxjs/t
 import projectsReducer from './slices/projects.slice';
 import userReducer from './slices/usersTmp.slice';
 import projectReducer from './slices/project.slice';
+import projectBoardReducer from './slices/projectBoard.slice';
 
 const reducer = combineReducers({
   projects: projectsReducer,
   users: userReducer,
   project: projectReducer,
+  projectBoard: projectBoardReducer,
 });
 
 export const store = configureStore({

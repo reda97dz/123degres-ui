@@ -1,41 +1,51 @@
 import {
+  Button,
   Card,
   Container,
+  Flex,
   Grid,
   Group,
   Progress,
   SimpleGrid,
   Text,
   TextInput,
-  UnstyledButton,
 } from '@mantine/core';
 import { useStyles } from './project-team/ProjectTeam.style';
 import { useAppSelector } from '@/modules/context/hooks';
 import { selectProject } from '@/modules/context/slices/project.slice';
 import { ProjectTeam } from './project-team';
-import dayjs from 'dayjs';
-import weekday from 'dayjs/plugin/weekday';
 import { ProjectBoard } from './project-board';
+import { useState } from 'react';
 
 export function Project() {
   const { team, project } = useAppSelector(selectProject);
   const { classes } = useStyles();
+  const [editProject, setEditProject] = useState(false);
+  const buttonText = editProject ? 'Appliquer' : 'Modifier';
 
   return (
     <Container>
       <SimpleGrid cols={2} spacing="md" breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
         <Card withBorder radius="md" className={classes.card}>
-          <Text weight={700} mb="md">
-            Informations Projet
-          </Text>
+          <Flex justify="space-between" align="center" mb="md">
+            <Text weight={700}>Infos Projet</Text>
+            <Button variant="white" onClick={() => setEditProject((v) => !v)}>
+              {buttonText}
+            </Button>
+          </Flex>
           {project && (
             <>
               <SimpleGrid cols={2} breakpoints={[{ maxWidth: 'sm', cols: 1 }]}>
-                <TextInput label="Nom Client" placeholder="Nom" value={project.client} disabled />
+                <TextInput
+                  label="Nom Client"
+                  placeholder="Nom"
+                  value={project.client}
+                  disabled={!editProject}
+                />
                 <TextInput
                   label="Téléphone"
                   placeholder="0X XXXXXXXX"
-                  disabled
+                  disabled={!editProject}
                   value={project.phone}
                 />
               </SimpleGrid>
@@ -43,21 +53,21 @@ export function Project() {
                 mt="md"
                 label="Adresse"
                 placeholder="Adresse"
-                disabled
+                disabled={!editProject}
                 value={project.address}
               />
               <TextInput
                 mt="md"
                 label="Complément"
                 placeholder="Complément"
-                disabled
+                disabled={!editProject}
                 value={project.complementary ?? ''}
               />
               <TextInput
                 mt="md"
                 label="Accès"
                 placeholder="Accès"
-                disabled
+                disabled={!editProject}
                 value={project.access ?? ''}
               />
             </>
